@@ -9,7 +9,9 @@ use std::{
 use serde::{Deserialize, Serialize};
 use serde_with::{DisplayFromStr, serde_as};
 
-use crate::grid_locator::{error::GridLocatorError, inner::GridLocatorInner};
+use crate::grid_locator::inner::GridLocatorInner;
+
+pub use crate::grid_locator::error::GridLocatorError;
 
 #[serde_as]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
