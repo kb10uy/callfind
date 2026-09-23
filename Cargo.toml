@@ -1,0 +1,28 @@
+[workspace]
+resolver = "3"
+members = [
+  "callfind-core",
+  "callfind-data",
+  "callfind",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+license = "MIT OR Apache-2.0"
+authors = ["Yū KOBAYASHI <kb10uy@kb10uy.org>"]
+
+[workspace.dependencies]
+callfind = { path = "./callfind" }
+callfind-core = { path = "./callfind-core" }
+callfind-data = { path = "./callfind-data" }
+
+anyhow = "1.0.104"
+itertools = "0.14.0"
+serde = { version = "1.0.229", features = ["derive"] }
+serde_with = "3.23.0"
+thiserror = "2.0.20"
+
+[profile.release]
+lto = true
+strip = true
