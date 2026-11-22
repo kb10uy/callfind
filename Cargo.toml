@@ -5,14 +5,23 @@ edition = "2024"
 license = "MIT OR Apache-2.0"
 authors = ["Yū KOBAYASHI <kb10uy@kb10uy.org>"]
 
+[features]
+default = ["std"]
+std = ["alloc", "serde/std", "serde_with/std", "thiserror/std", "time/std"]
+alloc = ["dep:time", "serde/alloc", "serde_with/alloc", "time/alloc"]
+
 [dependencies]
-serde = { version = "1.0.229", features = ["derive"] }
-serde_with = "3.23.0"
-thiserror = "2.0.20"
-time = { version = "0.3.55", features = ["serde"] }
+serde = { version = "1.0.229", default-features = false, features = ["derive"] }
+serde_with = { version = "3.23.0", default-features = false, features = ["macros"] }
+thiserror = { version = "2.0.20", default-features = false }
+time = { version = "0.3.55", default-features = false, features = ["serde"], optional = true }
 
 [dev-dependencies]
 anyhow = "1.0.104"
+
+[[example]]
+name = "find_entity"
+required-features = ["alloc"]
 
 [profile.release]
 lto = true

@@ -34,7 +34,11 @@ mod entity;
 mod error;
 mod parse;
 
-use std::collections::{HashMap, hash_map::Entry as MapEntry};
+use alloc::{
+    collections::{BTreeMap, btree_map::Entry as MapEntry},
+    string::String,
+    vec::Vec,
+};
 
 use crate::cty::parse::{Alias, parse_alias, parse_header};
 
@@ -114,8 +118,8 @@ impl AliasEntry {
 #[derive(Debug, Clone)]
 pub struct CtyDatabase {
     entities: Vec<Entity>,
-    callsigns: HashMap<String, AliasEntry>,
-    prefixes: HashMap<String, AliasEntry>,
+    callsigns: BTreeMap<String, AliasEntry>,
+    prefixes: BTreeMap<String, AliasEntry>,
     longest_prefix: usize,
 }
 
@@ -124,8 +128,8 @@ impl CtyDatabase {
     pub fn parse(text: &str) -> Result<CtyDatabase, CtyError> {
         let mut database = CtyDatabase {
             entities: Vec::new(),
-            callsigns: HashMap::new(),
-            prefixes: HashMap::new(),
+            callsigns: BTreeMap::new(),
+            prefixes: BTreeMap::new(),
             longest_prefix: 0,
         };
 
@@ -207,7 +211,7 @@ impl CtyDatabase {
 
     fn resolve<'a>(
         &'a self,
-        aliases: &'a HashMap<String, AliasEntry>,
+        aliases: &'a BTreeMap<String, AliasEntry>,
         key: &str,
         scope: Scope,
         kind: MatchKind,
@@ -227,7 +231,7 @@ impl CtyDatabase {
 
 /// Records one alias, leaving an earlier record of the same alias in place.
 fn insert_alias(
-    aliases: &mut HashMap<String, AliasEntry>,
+    aliases: &mut BTreeMap<String, AliasEntry>,
     alias: Alias,
     entity: usize,
     waedc_only: bool,
@@ -280,6 +284,8 @@ pub fn effective_segment(callsign: &str) -> &str {
 
 #[cfg(test)]
 mod tests {
+    use alloc::format;
+
     use time::UtcOffset;
 
     use super::{Continent, CtyDatabase, MatchKind, Scope, effective_segment};
