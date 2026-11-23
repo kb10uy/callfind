@@ -1,4 +1,4 @@
-use std::{
+use core::{
     fmt::{Display, Formatter, Result as FmtResult},
     iter::zip,
     str::{FromStr, from_utf8_unchecked},

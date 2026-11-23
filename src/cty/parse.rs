@@ -1,3 +1,8 @@
+use alloc::{
+    string::{String, ToString},
+    vec::Vec,
+};
+
 use time::UtcOffset;
 
 use crate::cty::{
@@ -90,7 +95,12 @@ fn parse_utc_offset(hours: f64) -> Result<UtcOffset, CtyError> {
         return Err(CtyError::UtcOffsetOutOfRange(hours));
     }
 
-    let seconds = (-hours * 3600.0).round() as i32;
+    let scaled = -hours * 3600.0;
+    let seconds = (if scaled >= 0.0 {
+        scaled + 0.5
+    } else {
+        scaled - 0.5
+    }) as i32;
     UtcOffset::from_whole_seconds(seconds).map_err(|_| CtyError::UtcOffsetOutOfRange(hours))
 }
 

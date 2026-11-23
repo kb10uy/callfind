@@ -1,7 +1,7 @@
 mod error;
 mod inner;
 
-use std::{
+use core::{
     fmt::{Display, Formatter, Result as FmtResult},
     str::FromStr,
 };
@@ -28,8 +28,8 @@ impl GridLocator {
         }
 
         // sub-degree square has 5760 blocks
-        let scaled_lng = (offset_lng / 2.0 * 5760.0) as usize;
-        let scaled_lat = (offset_lat * 5760.0) as usize;
+        let scaled_lng = (offset_lng / 2.0 * 5760.0) as u32;
+        let scaled_lat = (offset_lat * 5760.0) as u32;
         let lng_letters = Self::calculate_indices(scaled_lng);
         let lat_letters = Self::calculate_indices(scaled_lat);
 
@@ -47,7 +47,7 @@ impl GridLocator {
         ])))
     }
 
-    fn calculate_indices(scaled_value: usize) -> [u8; 5] {
+    fn calculate_indices(scaled_value: u32) -> [u8; 5] {
         let field = (scaled_value / 57600) as u8;
         let square = (scaled_value / 5760 % 10) as u8;
         let subsq1 = (scaled_value / 240 % 24) as u8;
